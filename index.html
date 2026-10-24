@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторная работа №5 — Музыкант и звукорежиссёр</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="light-theme">
+
+    <header>
+        <h1>Панель звукорежиссёра: Плейлист треков</h1>
+        <div class="controls-top">
+            <button id="theme-toggle-btn">Сменить тему</button>
+            <button id="toggle-playlist-btn">Скрыть/Показать плейлист</button>
+        </div>
+    </header>
+
+    <main>
+        <section class="control-panel">
+            <h2>Управление дорожками</h2>
+            <button id="add-track-btn" class="btn-add">➕ Добавить трек</button>
+            <button id="clear-playlist-btn" class="btn-clear">🗑️ Очистить плейлист</button>
+        </section>
+
+        <section id="playlist-section" class="playlist-container">
+            <h2>Текущий треклист</h2>
+            <ul id="tracks-list" class="tracks-list">
+            </ul>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

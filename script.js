@@ -31,6 +31,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderTracks() {
         tracksList.innerHTML = '';
 
+        updateTracksCount();
+
         if (tracksData.length === 0) {
             tracksList.innerHTML = '<li class="empty-msg">Плейлист пуст. Добавьте первый трек!</li>';
             return;
@@ -44,8 +46,8 @@ document.addEventListener('DOMContentLoaded', () => {
             li.innerHTML = `
                 <div class="track-info">
                     <div class="track-meta">
-                        <h3>${escapeHtml(track.name)}</h3>
-                        <span>⏱️ Длительность: ${escapeHtml(track.duration)}</span>
+                        <h3>${track.name}</h3>
+                        <span>⏱️ Длительность: ${track.duration}</span>
                     </div>
                 </div>
                 <div class="track-actions">
@@ -71,6 +73,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             tracksList.appendChild(li);
         });
+
+      updateTracksCount();
     }
 
     // Добавление трека
@@ -87,6 +91,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         if (!duration.trim()) {
             alert('Ошибка ввода: Длительность должна быть указана!');
+            return;
+        }
+
+        const parts = duration.trim().split(':');
+        if (parts.length !== 2 || isNaN(parts[0]) || isNaN(parts[1])) {
+            alert('Ошибка ввода: Некорректный формат! Длительность должна содержать только числа и ровно одно двоеточие (например, 3:45).');
             return;
         }
 
@@ -136,6 +146,22 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('playlistHidden', isHidden);
     });
 
+    function updateTracksCount() {
+        let countDisplay = document.getElementById('tracks-counter-display');
+
+        if (!countDisplay) {
+            countDisplay = document.createElement('div');
+            countDisplay.id = 'tracks-counter-display';
+            countDisplay.style.fontWeight = 'bold';
+            countDisplay.style.marginBottom = '10px';
+            countDisplay.style.opacity = '0.8';
+            tracksList.parentNode.insertBefore(countDisplay, tracksList);
+        }
+
+        const currentTracksInDom = document.querySelectorAll('#tracks-list .track-item');
+        countDisplay.textContent = `Всего треков в списке: ${currentTracksInDom.length}`;
+    }
+
     function saveToLocalStorage() {
         localStorage.setItem('tracksData', JSON.stringify(tracksData));
     }
@@ -144,7 +170,4 @@ document.addEventListener('DOMContentLoaded', () => {
         saveToLocalStorage();
         renderTracks();
     }
-
-    const topButtons = document.querySelectorAll('.controls-top button');
-    console.log(`Найдено кнопок в шапке сайта: ${topButtons.length}`);
 });
